@@ -369,48 +369,6 @@
     });
   }
 
-  function bindP3MobileItem(li, key, i) {
-    li.addEventListener('click', () => {
-      setFocus(i, false);
-      if (detailOpen) switchSection(key);
-      else openSection(key);
-    });
-  }
-
-  function appendP3MobileNav(container) {
-    const nav = document.createElement('nav');
-    nav.className = 'p3-mobile-nav';
-    nav.setAttribute('aria-label', 'Main menu');
-
-    const ul = document.createElement('ul');
-    ul.className = 'p3-mobile-list';
-    ul.setAttribute('role', 'menubar');
-
-    SECTIONS.forEach((key, i) => {
-      const li = document.createElement('li');
-      li.className = 'p3-mobile-item';
-      li.setAttribute('role', 'menuitem');
-      li.dataset.idx = String(i);
-      li.dataset.section = key;
-      li.innerHTML = `
-        <span class="p3-mobile-num">${String(i + 1).padStart(2, '0')}</span>
-        <span class="p3-mobile-label">${t(`menu.${key}`)}</span>
-        <span class="p3-mobile-arrow" aria-hidden="true">▶</span>
-      `;
-      bindP3MobileItem(li, key, i);
-      ul.appendChild(li);
-    });
-
-    nav.appendChild(ul);
-    container.appendChild(nav);
-
-    const preview = document.createElement('p');
-    preview.className = 'p3-mobile-preview';
-    preview.id = 'p3MobilePreview';
-    preview.textContent = getSection(SECTIONS[focusIndex]).preview;
-    container.appendChild(preview);
-  }
-
   function buildMenuP3() {
     menuColumn.innerHTML = '';
     optionWraps = [];
@@ -469,12 +427,13 @@
           openSection(key);
         }
       });
+      hit.addEventListener('touchstart', () => {
+        setFocus(i, false);
+      }, { passive: true });
 
       menuColumn.appendChild(wrap);
       optionWraps.push(wrap);
     });
-
-    appendP3MobileNav(menuColumn);
   }
 
   let dsEmberFrame = null;
@@ -665,12 +624,6 @@
   }
 
   function setFocusP3() {
-    document.querySelectorAll('.p3-mobile-item').forEach((item, i) => {
-      item.classList.toggle('is-selected', i === focusIndex);
-    });
-    const mobilePreview = document.getElementById('p3MobilePreview');
-    if (mobilePreview) mobilePreview.textContent = getSection(SECTIONS[focusIndex]).preview;
-
     optionWraps.forEach((wrap, i) => {
       const selected = i === focusIndex;
       wrap.classList.toggle('is-selected', selected);
