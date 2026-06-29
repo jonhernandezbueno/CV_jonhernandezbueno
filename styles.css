@@ -808,7 +808,7 @@ a:hover { text-decoration: underline; }
 }
 
 @media (max-width: 768px) {
-  .menu-side {
+  html:not([data-theme="p3"]) .menu-side {
     position: relative;
     left: auto;
     top: auto;
@@ -818,31 +818,31 @@ a:hover { text-decoration: underline; }
     padding: 4.75rem 0.35rem 6.5rem;
   }
 
-  .menu-column {
+  html:not([data-theme="p3"]) .menu-column {
     position: relative;
     justify-content: flex-start;
     padding-top: 0.5rem;
   }
 
-  .menu-svg {
+  html:not([data-theme="p3"]) .menu-svg {
     width: min(950px, 96vw);
     height: auto;
     max-height: 4.5rem;
   }
 
-  .menu-text { font-size: clamp(26px, 7.5vw, 40px); }
+  html:not([data-theme="p3"]) .menu-text { font-size: clamp(26px, 7.5vw, 40px); }
 
-  .menu-option-wrap {
+  html:not([data-theme="p3"]) .menu-option-wrap {
     margin-top: -3.25rem;
   }
 
-  .menu-option-wrap:first-child { margin-top: 0; }
+  html:not([data-theme="p3"]) .menu-option-wrap:first-child { margin-top: 0; }
 
-  .menu-hit {
+  html:not([data-theme="p3"]) .menu-hit {
     height: 2.75rem;
   }
 
-  .menu-option-wrap.is-selected .menu-text {
+  html:not([data-theme="p3"]) .menu-option-wrap.is-selected .menu-text {
     transform: scale(1.25);
   }
 
@@ -983,23 +983,23 @@ a:hover { text-decoration: underline; }
 }
 
 @media (max-width: 640px) {
-  .menu-side { padding-top: 4.25rem; }
-  .menu-text { font-size: clamp(22px, 6.8vw, 32px); }
-  .menu-option-wrap { margin-top: -2.5rem; }
+  html:not([data-theme="p3"]) .menu-side { padding-top: 4.25rem; }
+  html:not([data-theme="p3"]) .menu-text { font-size: clamp(22px, 6.8vw, 32px); }
+  html:not([data-theme="p3"]) .menu-option-wrap { margin-top: -2.5rem; }
   .index-display { display: none; }
   .stat-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 480px) {
-  .menu-side {
+  html:not([data-theme="p3"]) .menu-side {
     padding: 4rem 0.2rem 6rem;
   }
 
-  .menu-text { font-size: clamp(18px, 6.2vw, 26px); }
+  html:not([data-theme="p3"]) .menu-text { font-size: clamp(18px, 6.2vw, 26px); }
 
-  .menu-option-wrap { margin-top: -2rem; }
+  html:not([data-theme="p3"]) .menu-option-wrap { margin-top: -2rem; }
 
-  .menu-option-wrap.is-selected .menu-text {
+  html:not([data-theme="p3"]) .menu-option-wrap.is-selected .menu-text {
     transform: scale(1.15);
   }
 

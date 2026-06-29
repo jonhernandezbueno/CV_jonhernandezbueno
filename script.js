@@ -23,6 +23,21 @@
     { rotation: -8, zIndex: 2, offsetX: -20, offsetY: 20 }
   ];
 
+  function isNarrowP3Layout() {
+    return window.matchMedia('(max-width: 768px)').matches;
+  }
+
+  function resolveMenuLayout(index) {
+    const base = MENU_LAYOUT[index];
+    if (!isNarrowP3Layout()) return base;
+    return {
+      rotation: Math.round(base.rotation * 0.55),
+      zIndex: base.zIndex,
+      offsetX: Math.round(base.offsetX * 0.35) + 32,
+      offsetY: Math.round(base.offsetY * 0.4)
+    };
+  }
+
   const FILL_CLASSES = ['fill-1', 'fill-2', 'fill-3'];
 
   /* Orden fijo DS1 — lista izquierda idéntica al juego */
@@ -374,7 +389,7 @@
     optionWraps = [];
 
     SECTIONS.forEach((key, i) => {
-      const layout = MENU_LAYOUT[i];
+      const layout = resolveMenuLayout(i);
       const label = t(`menu.${key}`);
       const maskId = `selector-mask-${i}`;
       const transform = selectorTransform(label);
@@ -1070,6 +1085,16 @@
   if (detailBackMobile) {
     detailBackMobile.addEventListener('click', () => backToMain());
   }
+
+  let narrowP3Cached = isNarrowP3Layout();
+  window.addEventListener('resize', () => {
+    const narrow = isNarrowP3Layout();
+    if (narrow === narrowP3Cached || currentTheme !== 'p3') return;
+    narrowP3Cached = narrow;
+    buildMenuP3();
+    setFocus(focusIndex, false);
+    if (detailOpen && currentSection) loadSectionContent(currentSection, false);
+  });
 
   document.addEventListener('click', () => ensureAudio(), { once: true });
   document.addEventListener('keydown', () => ensureAudio(), { once: true });

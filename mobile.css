@@ -79,11 +79,7 @@
     padding: 0.22rem 0.45rem;
   }
 
-  /* ─── P3: menú 1 SVG escalado y táctil ─── */
-  [data-theme="p3"] {
-    --p3-m-scale: min(0.52, calc((100vw - 1.25rem) / 980));
-  }
-
+  /* ─── P3: menú 1 SVG diagonal escalado (sin transform que recorte) ─── */
   [data-theme="p3"] html,
   [data-theme="p3"] body {
     overflow: hidden;
@@ -101,6 +97,7 @@
     position: absolute;
     inset: 0;
     overflow: hidden;
+    z-index: 12;
   }
 
   [data-theme="p3"] .char-portrait,
@@ -115,28 +112,46 @@
     width: 100% !important;
     height: 100% !important;
     transform: none !important;
-    padding: calc(4.35rem + env(safe-area-inset-top)) 0 calc(6.75rem + env(safe-area-inset-bottom)) 0;
+    padding: calc(4.25rem + env(safe-area-inset-top)) 0 calc(6.25rem + env(safe-area-inset-bottom)) 0;
     display: flex;
     align-items: center;
-    justify-content: center;
-    overflow: hidden;
+    justify-content: flex-start;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   [data-theme="p3"] .menu-column {
-    position: relative;
-    left: auto;
-    top: auto;
-    width: 950px;
-    height: auto;
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0;
     flex-shrink: 0;
-    transform: scale(var(--p3-m-scale));
-    transform-origin: center center;
-    justify-content: center;
-    margin: 0 auto;
+    transform: none !important;
+    transform-origin: top left;
+    justify-content: flex-start !important;
+    margin: 0;
+    padding: 0.15rem 0 0.5rem 0.35rem;
+    overflow: visible;
+  }
+
+  [data-theme="p3"] .menu-svg {
+    display: block !important;
+    width: min(920px, 118vw) !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  [data-theme="p3"] .menu-text {
+    font-size: clamp(30px, 9.5vw, 52px) !important;
   }
 
   [data-theme="p3"] .menu-option-wrap {
-    margin-top: -5.75rem;
+    margin-top: -3.35rem;
+    overflow: visible;
   }
 
   [data-theme="p3"] .menu-option-wrap:first-child {
@@ -144,13 +159,14 @@
   }
 
   [data-theme="p3"] .menu-hit {
-    height: 3.5rem;
+    height: 3.25rem;
+    width: 100%;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
 
   [data-theme="p3"] .menu-option-wrap.is-selected .menu-text {
-    transform: scale(1.35);
+    transform: scale(1.28);
   }
 
   [data-theme="p3"] .menu-prompt {
@@ -332,18 +348,33 @@
   [data-theme="ds"] .ds-screen.detail-open .ds-columns {
     display: block !important;
     min-height: 0 !important;
+    height: auto !important;
     grid-template-columns: 1fr !important;
+  }
+
+  [data-theme="ds"] .ds-screen.detail-open .menu-side,
+  [data-theme="ds"] .menu-stage.detail-open .menu-side {
+    transform: none !important;
+    overflow: visible !important;
   }
 
   [data-theme="ds"] .ds-screen.detail-open .ds-col-detail {
     position: fixed !important;
-    inset: 0 !important;
-    z-index: 45 !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    z-index: 55 !important;
     display: flex !important;
     flex-direction: column !important;
     grid-column: 1 !important;
     margin: 0 !important;
-    padding: calc(3.75rem + env(safe-area-inset-top)) 0.55rem calc(0.65rem + env(safe-area-inset-bottom)) 0.55rem !important;
+    padding: calc(3.65rem + env(safe-area-inset-top)) 0.65rem calc(0.75rem + env(safe-area-inset-bottom)) 0.65rem !important;
+    box-sizing: border-box !important;
     background:
       url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
       linear-gradient(180deg, rgba(14, 10, 8, 0.98) 0%, rgba(6, 4, 3, 0.99) 100%) !important;
@@ -354,53 +385,54 @@
   [data-theme="ds"] .ds-screen.detail-open .ds-detail-columns {
     display: flex !important;
     flex-direction: column !important;
-    flex: 1 !important;
+    flex: 1 1 auto !important;
     min-height: 0 !important;
-    height: auto !important;
+    height: 100% !important;
+    max-height: none !important;
     grid-template-columns: 1fr !important;
   }
 
+  /* En móvil el menú 2 prioriza el contenido del CV */
   [data-theme="ds"] .ds-screen.detail-open .ds-detail-side {
-    flex-shrink: 0;
-    max-height: 32dvh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    border-right: none;
-    border-bottom: 1px solid var(--ds-divider);
-    padding: 0 0 0.5rem;
-    margin-bottom: 0.45rem;
-  }
-
-  [data-theme="ds"] .ds-screen.detail-open .ds-detail-side .ds-stat-list {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.2rem;
+    display: none !important;
   }
 
   [data-theme="ds"] .ds-screen.detail-open .ds-detail-main {
-    flex: 1;
+    flex: 1 1 auto;
     min-height: 0;
+    height: 100%;
     display: flex;
     flex-direction: column;
     padding-left: 0;
   }
 
   [data-theme="ds"] .ds-screen.detail-open .ds-detail-scroll {
-    flex: 1;
+    flex: 1 1 auto;
     min-height: 0;
+    height: auto !important;
     max-height: none !important;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    padding-right: 0.15rem;
+  }
+
+  [data-theme="ds"] .ds-screen.detail-open .ds-detail-body {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    padding-bottom: 0.5rem;
   }
 
   [data-theme="ds"] .ds-screen.detail-open .ds-accept-back {
     display: flex !important;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
     width: 100%;
-    margin-top: 0.45rem;
-    padding: 0.65rem 0.5rem;
-    font-size: 0.78rem;
-    letter-spacing: 0.12em;
+    margin-top: 0.55rem;
+    padding: 0.75rem 0.5rem;
+    min-height: 2.85rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
@@ -416,12 +448,16 @@
 }
 
 @media (max-width: 480px) {
-  [data-theme="p3"] {
-    --p3-m-scale: min(0.46, calc((100vw - 1rem) / 980));
+  [data-theme="p3"] .menu-text {
+    font-size: clamp(26px, 8.8vw, 44px) !important;
   }
 
   [data-theme="p3"] .menu-option-wrap {
-    margin-top: -5.25rem;
+    margin-top: -2.85rem;
+  }
+
+  [data-theme="p3"] .menu-side {
+    padding-left: 0.15rem;
   }
 
   [data-theme="ds"] .menu-identity {
