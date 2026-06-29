@@ -898,11 +898,11 @@ a:hover { text-decoration: underline; }
     outline-width: 2px;
   }
 
-  .menu-stage.detail-open .menu-side {
+  [data-theme="p3"] .menu-stage.detail-open .menu-side {
     display: none;
   }
 
-  .detail-panel {
+  [data-theme="p3"] .detail-panel {
     position: fixed;
     inset: 0;
     left: 0;
@@ -917,7 +917,7 @@ a:hover { text-decoration: underline; }
     background: linear-gradient(160deg, rgba(1, 50, 130, 0.97) 0%, rgba(3, 31, 100, 0.98) 100%);
   }
 
-  .menu-stage.detail-open .detail-panel {
+  [data-theme="p3"] .menu-stage.detail-open .detail-panel {
     transform: translateX(0);
     opacity: 1;
     pointer-events: auto;

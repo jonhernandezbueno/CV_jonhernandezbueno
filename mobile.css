@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════════════
-   MOBILE / COMPACT — @media (no depende solo de JS)
+   MOBILE — solo @media (max-width: 768px)
+   Escritorio: este archivo no oculta nada (min-width: 769px)
    ═══════════════════════════════════════════════════════ */
 
 .p3-mobile-nav,
@@ -8,485 +9,226 @@
   display: none;
 }
 
-/* ─── Compact layout (≤900px) ─── */
-@media (max-width: 900px) {
-  html.is-compact,
-  html.is-compact body {
+@media (max-width: 768px) {
+  /* ─── P3: scroll y layout ─── */
+  [data-theme="p3"] html,
+  [data-theme="p3"] body {
     overflow-x: hidden;
     overflow-y: auto;
     height: auto;
     min-height: 100dvh;
-    -webkit-overflow-scrolling: touch;
   }
 
-  html.is-compact .main-menu {
+  [data-theme="p3"] .main-menu {
     position: relative;
     min-height: 100dvh;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: visible;
   }
 
-  html.is-compact .menu-stage {
-    position: relative !important;
-    inset: auto !important;
+  [data-theme="p3"] .menu-stage {
+    position: relative;
+    inset: auto;
+    overflow: visible;
     min-height: auto;
-    overflow: visible !important;
   }
 
-  html.is-compact .char-portrait,
-  html.is-compact .index-display,
-  html.is-compact .menu-prompt {
+  [data-theme="p3"] .char-portrait,
+  [data-theme="p3"] .index-display,
+  [data-theme="p3"] .menu-prompt {
     display: none !important;
   }
 
-  /* ─── Header fijo ─── */
-  html.is-compact .menu-header-bar {
-    position: fixed;
-    top: max(0.35rem, env(safe-area-inset-top));
-    right: 0.4rem;
-    left: 0.4rem;
-    z-index: 200;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 0.3rem;
-    pointer-events: none;
-  }
-
-  html.is-compact .menu-header-bar > * {
-    pointer-events: auto;
-  }
-
-  html.is-compact .menu-identity {
-    font-size: 0.56rem;
-    max-width: 46vw;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  /* ─── P3: ocultar menú SVG, mostrar lista ─── */
-  html.is-compact .p3-desktop-menu {
-    display: none !important;
-  }
-
-  html.is-compact .p3-mobile-nav,
-  html.is-compact .p3-mobile-preview {
-    display: block;
-  }
-
-  html.is-compact .menu-side {
-    position: relative !important;
+  [data-theme="p3"] .menu-side {
+    position: relative;
     left: auto !important;
     top: auto !important;
     width: 100% !important;
     height: auto !important;
-    min-height: 100dvh;
-    padding: 3.5rem 0.6rem max(4.75rem, calc(4.25rem + env(safe-area-inset-bottom))) !important;
+    min-height: auto;
     transform: none !important;
+    padding: 4.75rem 0.85rem 6.5rem;
   }
 
-  html.is-compact .menu-column {
-    position: relative !important;
-    display: flex !important;
-    flex-direction: column;
-    gap: 0.75rem;
-    justify-content: flex-start !important;
-    height: auto !important;
-    width: 100%;
+  [data-theme="p3"] .menu-column {
+    position: relative;
+    height: auto;
+    justify-content: flex-start;
+    gap: 0.65rem;
   }
 
-  html.is-compact .menu-stage.detail-open .menu-side {
+  /* Ocultar menú SVG; mostrar lista táctil */
+  [data-theme="p3"] .menu-option-wrap {
     display: none !important;
   }
 
-  html.is-compact .p3-mobile-nav {
-    width: 100%;
+  [data-theme="p3"] .p3-mobile-nav,
+  [data-theme="p3"] .p3-mobile-preview {
+    display: block;
   }
 
-  html.is-compact .p3-mobile-list {
+  .p3-mobile-list {
     list-style: none;
-    margin: 0;
-    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.38rem;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
   }
 
-  html.is-compact .p3-mobile-item {
-    display: grid;
-    grid-template-columns: 2.1rem 1fr 1rem;
+  .p3-mobile-item {
+    display: flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.85rem 0.65rem;
-    min-height: 3rem;
-    background: rgba(3, 31, 100, 0.62);
-    border: 2px solid rgba(93, 106, 136, 0.6);
+    gap: 0.65rem;
+    padding: 0.8rem 0.9rem;
+    min-height: 3.1rem;
+    border: 2px solid var(--border);
+    background: rgba(3, 31, 100, 0.6);
+    box-shadow: var(--shadow-under);
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
 
-  html.is-compact .p3-mobile-item.is-selected {
-    background: linear-gradient(90deg, rgba(253, 119, 217, 0.38) 0%, rgba(3, 31, 100, 0.65) 100%);
-    border-color: var(--pink);
-    box-shadow: 0 0 16px rgba(253, 119, 217, 0.35);
+  .p3-mobile-item.is-selected {
+    border-color: var(--fg);
+    background: linear-gradient(90deg, rgba(253, 119, 217, 0.38) 0%, rgba(3, 31, 100, 0.82) 100%);
+    box-shadow: var(--shadow-border);
   }
 
-  html.is-compact .p3-mobile-num {
-    font-family: var(--font-menu);
-    font-size: 0.7rem;
-    color: var(--button-1);
-    text-align: center;
-  }
-
-  html.is-compact .p3-mobile-label {
-    font-family: var(--font-menu);
-    font-style: italic;
-    font-size: clamp(0.92rem, 4.5vw, 1.05rem);
-    letter-spacing: -0.04em;
-    color: var(--fg);
-    line-height: 1.2;
-  }
-
-  html.is-compact .p3-mobile-arrow {
-    font-size: 0.5rem;
-    color: var(--pink);
-    opacity: 0;
-  }
-
-  html.is-compact .p3-mobile-item.is-selected .p3-mobile-arrow {
-    opacity: 1;
-  }
-
-  html.is-compact .p3-mobile-preview {
+  .p3-mobile-num {
     font-family: var(--font-body);
-    font-style: italic;
-    font-size: 0.86rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--button-1);
+    min-width: 1.6rem;
+    flex-shrink: 0;
+  }
+
+  .p3-mobile-label {
+    flex: 1;
+    font-size: clamp(0.92rem, 4.1vw, 1.1rem);
+    letter-spacing: 0.03em;
+    line-height: 1.15;
+  }
+
+  .p3-mobile-arrow {
+    color: var(--muted);
+    font-size: 0.65rem;
+    flex-shrink: 0;
+  }
+
+  .p3-mobile-item.is-selected .p3-mobile-arrow {
+    color: var(--pink);
+  }
+
+  .p3-mobile-preview {
+    font-family: var(--font-body);
+    font-size: 0.84rem;
     line-height: 1.45;
-    color: rgba(232, 246, 255, 0.9);
-    text-align: center;
-    padding: 0.6rem 0.25rem 0;
-    margin: 0;
-    border-top: 1px solid rgba(22, 207, 251, 0.25);
+    color: rgba(255, 255, 255, 0.75);
+    padding: 0.65rem 0.15rem 0;
+    margin-top: 0.15rem;
+    border-top: 1px solid rgba(93, 106, 136, 0.5);
   }
 
-  /* ─── P3 detalle pantalla completa ─── */
-  html.is-compact .detail-panel {
-    position: fixed !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100dvh !important;
-    max-height: 100dvh;
-    padding: 3.25rem 0.7rem max(4.25rem, calc(3.75rem + env(safe-area-inset-bottom))) !important;
-    z-index: 150 !important;
-    transform: translateX(105%);
-    opacity: 0;
-    pointer-events: none;
-    background: linear-gradient(165deg, rgba(1, 50, 130, 0.98) 0%, rgba(3, 31, 100, 0.99) 100%);
+  /* P3 detalle a pantalla completa */
+  [data-theme="p3"] .menu-stage.detail-open .menu-side {
+    display: none !important;
   }
 
-  html.is-compact .menu-stage.detail-open .detail-panel {
-    transform: translateX(0) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-  }
-
-  html.is-compact .detail-back-mobile {
+  [data-theme="p3"] .detail-back-mobile {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    margin-bottom: 0.65rem;
-    padding: 0.45rem 0.7rem;
-    min-height: 2.5rem;
-    border: 2px solid var(--fg);
+    margin-bottom: 0.75rem;
+    padding: 0.35rem 0.55rem;
+    border: 2px solid var(--border);
     background: rgba(3, 31, 100, 0.75);
-    color: var(--fg);
-    font-family: var(--font-body);
-    font-size: 0.78rem;
-    font-style: italic;
-    letter-spacing: 0.04em;
+    color: var(--button-2);
+    font-family: var(--font-menu);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
     cursor: pointer;
-    touch-action: manipulation;
     box-shadow: var(--shadow-under);
+    -webkit-tap-highlight-color: transparent;
   }
 
-  html.is-compact .detail-back-mobile::before {
-    content: "←";
-    font-style: normal;
-    font-weight: 700;
+  [data-theme="p3"] .detail-back-mobile::before {
+    content: "◀";
+    font-size: 0.6rem;
+    color: var(--pink);
   }
 
-  html.is-compact .detail-title-wrap {
-    margin-left: 0.25rem;
-  }
-
-  html.is-compact .detail-title,
-  html.is-compact .detail-title-red {
-    font-size: clamp(1.15rem, 5.5vw, 1.6rem) !important;
-  }
-
-  html.is-compact .detail-body {
-    font-size: 0.85rem;
-    padding: 0.15rem 0.1rem 0.75rem;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  html.is-compact .command-bar {
-    position: fixed !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 100% !important;
-    padding: 0.4rem 0.65rem max(0.5rem, env(safe-area-inset-bottom)) !important;
-    background: linear-gradient(0deg, rgba(3, 31, 100, 0.97) 55%, transparent) !important;
-    z-index: 180 !important;
-  }
-
-  html.is-compact .command-desc {
-    display: none;
-  }
-
-  html.is-compact .command-controls {
-    justify-content: center;
-    gap: 1rem;
-  }
-
-  html.is-compact .control-label {
-    font-size: 0.78rem !important;
-  }
-
-  html.is-compact .control-key {
-    width: 1.45rem !important;
-    height: 1.45rem !important;
-    font-size: 0.72rem !important;
-  }
-
-  html.is-compact .stat-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* ─── DS compacto ─── */
-  html.is-compact[data-theme="ds"] .menu-side {
-    position: relative !important;
-    left: auto !important;
-    top: auto !important;
-    transform: none !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    max-height: none !important;
-    padding: 3.35rem 0.35rem 1rem !important;
-    filter: none !important;
-    overflow: visible !important;
-  }
-
-  html.is-compact[data-theme="ds"] .menu-side::before {
+  /* ─── DS: vista compacta ─── */
+  [data-theme="ds"] .ds-screen:not(.detail-open) .ds-col-mid,
+  [data-theme="ds"] .ds-screen:not(.detail-open) .ds-col-right {
     display: none !important;
   }
 
-  html.is-compact .ds-screen-edge {
-    padding: 0.5rem 0.4rem 0.6rem;
-    clip-path: none;
-  }
-
-  html.is-compact .ds-ornate-corner {
-    display: none;
-  }
-
-  html.is-compact .ds-topbar {
-    gap: 0.45rem;
-    margin-bottom: 0.35rem;
-    padding-bottom: 0.45rem;
-  }
-
-  html.is-compact .ds-topbar-portrait {
-    width: 38px;
-    height: 38px;
-  }
-
-  html.is-compact .ds-panel-title {
-    font-size: 0.84rem;
-    letter-spacing: 0.08em;
-  }
-
-  html.is-compact .ds-panel-hint {
-    font-size: 0.72rem;
-    line-height: 1.35;
-  }
-
-  html.is-compact .ds-columns {
-    display: block !important;
-    min-height: 0 !important;
-  }
-
-  html.is-compact .ds-col-mid,
-  html.is-compact .ds-col-right {
+  [data-theme="ds"] .ds-screen:not(.detail-open) .ds-section-label--params,
+  [data-theme="ds"] .ds-screen:not(.detail-open) .ds-list {
     display: none !important;
   }
 
-  html.is-compact .ds-col {
-    padding: 0.2rem 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-  }
-
-  html.is-compact .ds-screen:not(.detail-open) .ds-section-label--params,
-  html.is-compact .ds-screen:not(.detail-open) .ds-list {
-    display: none !important;
-  }
-
-  html.is-compact .ds-mobile-stats {
-    display: block;
+  [data-theme="ds"] .ds-mobile-stats:not(:empty) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
     list-style: none;
-    margin: 0.4rem 0 0;
-    padding: 0.4rem 0 0;
-    border-top: 1px solid rgba(168, 138, 72, 0.18);
+    margin: 0.35rem 0 0.5rem;
+    padding: 0;
   }
 
-  html.is-compact .ds-mobile-stats:empty {
-    display: none;
-  }
-
-  html.is-compact .ds-mobile-stat {
+  [data-theme="ds"] .ds-mobile-stat {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.3rem 0.1rem;
-    font-size: 0.72rem;
+    gap: 0.5rem;
+    padding: 0.32rem 0.4rem;
+    font-size: 0.74rem;
+    background: rgba(0, 0, 0, 0.28);
+    border: 1px solid rgba(168, 138, 72, 0.15);
     color: var(--ds-text-dim);
-    border-bottom: 1px solid rgba(28, 22, 16, 0.55);
   }
 
-  html.is-compact .ds-mobile-stat-val {
+  [data-theme="ds"] .ds-mobile-stat-val {
     color: var(--ds-gold-bright);
     font-variant-numeric: tabular-nums;
-    font-size: 0.68rem;
+    white-space: nowrap;
   }
 
-  html.is-compact .ds-cv-item {
-    padding: 0.6rem 0.35rem;
-    min-height: 2.85rem;
-    touch-action: manipulation;
-  }
-
-  html.is-compact .ds-cv-label {
-    font-size: 0.76rem;
-    white-space: normal;
-    line-height: 1.2;
-  }
-
-  html.is-compact .ds-char-row {
-    font-size: 0.76rem;
-  }
-
-  html.is-compact .ds-accept {
-    margin-top: 0.5rem;
-    padding: 0.7rem 0.45rem;
-    min-height: 2.85rem;
-    touch-action: manipulation;
-  }
-
-  html.is-compact .ds-screen.detail-open .ds-char-stats,
-  html.is-compact .ds-screen.detail-open .ds-section-label--params,
-  html.is-compact .ds-screen.detail-open .ds-list,
-  html.is-compact .ds-screen.detail-open .ds-mobile-stats {
+  [data-theme="ds"] .ds-screen.detail-open .ds-mobile-stats {
     display: none !important;
   }
 
-  html.is-compact .ds-screen.detail-open .ds-cv-list {
-    max-height: 8.5rem !important;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  html.is-compact .ds-screen.detail-open .ds-col-menu {
-    border-bottom: 1px solid var(--ds-divider);
-    padding-bottom: 0.35rem;
-  }
-
-  html.is-compact .ds-detail-columns {
+  [data-theme="ds"] .ds-screen.detail-open .ds-section-label--params,
+  [data-theme="ds"] .ds-screen.detail-open .ds-list {
     display: block !important;
   }
 
-  html.is-compact .ds-detail-side {
+  [data-theme="ds"] .ds-screen.detail-open .ds-col-mid,
+  [data-theme="ds"] .ds-screen.detail-open .ds-col-right {
     display: none !important;
   }
+}
 
-  html.is-compact .ds-detail-main {
-    padding-left: 0 !important;
+@media (max-width: 480px) {
+  [data-theme="p3"] .menu-side {
+    padding: 4.35rem 0.65rem 6rem;
   }
 
-  html.is-compact .ds-detail-scroll {
-    max-height: calc(100dvh - 13.5rem) !important;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  html.is-compact .ds-accept-back {
+  .p3-mobile-item {
+    padding: 0.7rem 0.75rem;
     min-height: 2.85rem;
-    touch-action: manipulation;
   }
 
-  html.is-compact[data-theme="ds"] .bg-ds-bonfire {
-    width: 120px;
-    height: 90px;
-    opacity: 0.65;
+  [data-theme="p3"] .menu-identity-wrap {
+    max-width: 100%;
   }
 }
 
-@media (max-width: 380px) {
-  html.is-compact .menu-identity-wrap {
-    display: none;
-  }
-}
-
-/* Fallback sin clase is-compact (por si el inline script falla) */
-@media (max-width: 900px) {
-  .p3-desktop-menu {
-    display: none !important;
-  }
-
-  .p3-mobile-nav,
-  .p3-mobile-preview {
-    display: block;
-  }
-
-  .char-portrait {
-    display: none !important;
-  }
-
-  .menu-side {
-    position: relative !important;
-    left: auto !important;
-    top: auto !important;
-    width: 100% !important;
-    transform: none !important;
-    padding-top: 3.5rem !important;
-  }
-
-  [data-theme="ds"] .menu-side {
-    position: relative !important;
-    transform: none !important;
-    top: auto !important;
-    left: auto !important;
-    max-height: none !important;
-  }
-
-  [data-theme="ds"] .ds-col-mid,
-  [data-theme="ds"] .ds-col-right {
-    display: none !important;
-  }
-
-  [data-theme="ds"] .ds-screen:not(.detail-open) .ds-list,
-  [data-theme="ds"] .ds-screen:not(.detail-open) .ds-section-label--params {
-    display: none !important;
-  }
-
-  [data-theme="ds"] .ds-mobile-stats {
-    display: block;
-  }
-}
-
-@media (min-width: 901px) {
+/* Escritorio: nunca mostrar UI móvil */
+@media (min-width: 769px) {
   .p3-mobile-nav,
   .p3-mobile-preview,
   .detail-back-mobile {
