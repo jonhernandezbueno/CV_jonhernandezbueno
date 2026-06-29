@@ -312,6 +312,7 @@
       const cost = map ? (DS_SOUL_COST[map.boost] || 1104) : 0;
       soulsEl.textContent = map ? String(8420 - cost) : '8420';
     }
+    updateDSMobileStats(sectionKey);
   }
 
   function bindDSCvItem(li, key, i) {
@@ -345,7 +346,9 @@
   }
 
   function buildMenu() {
+    syncMobileClass();
     if (currentTheme === 'ds') buildMenuDS();
+    else if (mobileLayoutActive) buildMenuP3Mobile();
     else buildMenuP3();
     setFocus(focusIndex, false);
     if (currentSection) loadSectionContent(currentSection, false);
@@ -366,6 +369,66 @@
         openSection(key);
       }
     });
+  }
+
+  let dsEmberFrame = null;
+
+  function isMobileLayout() {
+    return window.matchMedia('(max-width: 768px), (hover: none) and (pointer: coarse)').matches;
+  }
+
+  let mobileLayoutActive = false;
+
+  function syncMobileClass() {
+    mobileLayoutActive = isMobileLayout();
+    document.body.classList.toggle('is-mobile', mobileLayoutActive);
+  }
+
+  function bindP3MobileItem(li, key, i) {
+    const activate = () => {
+      setFocus(i, false);
+      if (detailOpen) switchSection(key);
+      else openSection(key);
+    };
+    li.addEventListener('click', activate);
+  }
+
+  function buildMenuP3Mobile() {
+    menuColumn.innerHTML = '';
+    optionWraps = [];
+
+    const nav = document.createElement('nav');
+    nav.className = 'p3-mobile-nav';
+    nav.setAttribute('aria-label', 'Main menu');
+
+    const ul = document.createElement('ul');
+    ul.className = 'p3-mobile-list';
+    ul.setAttribute('role', 'menubar');
+
+    SECTIONS.forEach((key, i) => {
+      const li = document.createElement('li');
+      li.className = 'p3-mobile-item';
+      li.setAttribute('role', 'menuitem');
+      li.dataset.idx = String(i);
+      li.dataset.section = key;
+      li.innerHTML = `
+        <span class="p3-mobile-num">${String(i + 1).padStart(2, '0')}</span>
+        <span class="p3-mobile-label">${t(`menu.${key}`)}</span>
+        <span class="p3-mobile-arrow" aria-hidden="true">▶</span>
+      `;
+      bindP3MobileItem(li, key, i);
+      ul.appendChild(li);
+      optionWraps.push(li);
+    });
+
+    nav.appendChild(ul);
+    menuColumn.appendChild(nav);
+
+    const preview = document.createElement('p');
+    preview.className = 'p3-mobile-preview';
+    preview.id = 'p3MobilePreview';
+    preview.textContent = getSection(SECTIONS[focusIndex]).preview;
+    menuColumn.appendChild(preview);
   }
 
   function buildMenuP3() {
@@ -469,6 +532,7 @@
                 </div>
                 <p class="ds-section-label" data-i18n="dsCvRecords">Registros</p>
                 <ul class="ds-cv-list" id="dsCvList" role="menubar" aria-label="CV sections"></ul>
+                <ul class="ds-mobile-stats" id="dsMobileStats" aria-label="Stats preview"></ul>
                 <p class="ds-section-label ds-section-label--params" data-i18n="dsParameters">Parámetros</p>
                 <ul class="ds-list" role="presentation" aria-label="Attributes"></ul>
                 <button type="button" class="ds-accept" id="dsAcceptBtn">
@@ -561,6 +625,8 @@
     }
 
     updateDSStats();
+    const dsScreen = menuColumn.querySelector('.ds-screen');
+    if (dsScreen) dsScreen.classList.toggle('ds-screen--mobile', mobileLayoutActive);
   }
 
   function updateDSDetailStats(key) {
@@ -592,12 +658,33 @@
     const dsCol = document.getElementById('dsDetailCol');
     if (dsScreen) dsScreen.classList.toggle('detail-open', open);
     if (dsCol) dsCol.setAttribute('aria-hidden', open ? 'false' : 'true');
+    if (dsScreen) dsScreen.classList.toggle('ds-screen--mobile', mobileLayoutActive);
+  }
+
+  function updateDSMobileStats(sectionKey) {
+    const el = document.getElementById('dsMobileStats');
+    if (!el || !mobileLayoutActive) return;
+    const cur = computeDerived(DS_BASE_ATTR);
+    const nxt = computeDerived(getAttrsWithBoost(sectionKey));
+    const rows = [
+      { labelKey: 'dsStatHP', cur: cur.hp, next: nxt.hp },
+      { labelKey: 'dsStatEquipLoad', cur: cur.equip, next: nxt.equip },
+      { labelKey: 'dsStatStamina', cur: cur.stamina, next: nxt.stamina },
+      { labelKey: 'dsStatPhysDef', cur: cur.physDef, next: nxt.physDef },
+      { labelKey: 'dsStatMagicAttack', cur: cur.magicAtk, next: nxt.magicAtk }
+    ];
+    const changed = rows.filter((r) => r.cur !== r.next).slice(0, 4);
+    el.innerHTML = changed
+      .map((r) => `<li class="ds-mobile-stat"><span>${t(r.labelKey)}</span><span class="ds-mobile-stat-val">${r.cur} › ${r.next}</span></li>`)
+      .join('');
   }
 
   function setFocusP3() {
     optionWraps.forEach((wrap, i) => {
       const selected = i === focusIndex;
       wrap.classList.toggle('is-selected', selected);
+      if (mobileLayoutActive) return;
+
       wrap.style.zIndex = selected ? '5' : String(MENU_LAYOUT[i].zIndex);
 
       const text = wrap.querySelector('.menu-text:not(.fill-red)');
@@ -617,6 +704,9 @@
         redGroup.style.display = 'none';
       }
     });
+
+    const mobilePreview = document.getElementById('p3MobilePreview');
+    if (mobilePreview) mobilePreview.textContent = getSection(SECTIONS[focusIndex]).preview;
   }
 
   function setFocusDS() {
@@ -1045,8 +1135,15 @@
   document.documentElement.dataset.theme = 'p3';
   themeButtons.forEach((b) => b.classList.toggle('active', b.dataset.theme === 'p3'));
 
+  syncMobileClass();
+  window.addEventListener('resize', () => {
+    const wasMobile = mobileLayoutActive;
+    syncMobileClass();
+    if (wasMobile !== mobileLayoutActive) buildMenu();
+  });
+
   applyLanguage(currentLang);
   setCommandMode('main');
   initOcean();
-  if (currentTheme === 'p3') setTimeout(pulseSelectors, 500);
+  if (currentTheme === 'p3' && !mobileLayoutActive) setTimeout(pulseSelectors, 500);
 })();

@@ -1207,6 +1207,13 @@
   color: var(--ds-text);
 }
 
+.ds-mobile-stats {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 /* ─── Responsive ─── */
 @media (max-width: 900px) {
   [data-theme="ds"] .menu-side {
