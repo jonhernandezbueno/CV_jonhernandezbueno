@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="p3">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jon Hernández-Bueno — CV · Persona 3 Reload</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Exo+2:ital,wght@0,400;0,600;1,400;1,600&family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme-ds.css">
 </head>
 <body>
   <!-- Menú + detalle en la misma pantalla -->
@@ -15,6 +16,22 @@
     <div class="bg-ocean" aria-hidden="true">
       <canvas id="oceanCanvas"></canvas>
       <div class="bg-caustics"></div>
+    </div>
+    <div class="bg-ds" aria-hidden="true">
+      <div class="bg-ds-scene"></div>
+      <div class="bg-ds-ruins"></div>
+      <div class="bg-ds-trees"></div>
+      <div class="bg-ds-moon"></div>
+      <div class="bg-ds-floor"></div>
+      <div class="bg-ds-logs"></div>
+      <div class="bg-ds-bonfire"></div>
+      <div class="bg-ds-bonfire-core"></div>
+      <div class="bg-ds-light-spill"></div>
+      <canvas id="dsEmberCanvas" class="bg-ds-embers-canvas"></canvas>
+      <div class="bg-ds-fog"></div>
+      <div class="bg-ds-grain"></div>
+      <div class="bg-ds-vignette"></div>
+      <div class="bg-ds-colorgrade"></div>
     </div>
 
     <div class="char-portrait" aria-hidden="true">
@@ -70,6 +87,10 @@
     </div>
 
     <div class="menu-header-bar">
+      <div class="theme-switch" role="group" aria-label="Tema visual">
+        <button type="button" class="theme-btn active" data-theme="p3">P3</button>
+        <button type="button" class="theme-btn" data-theme="ds">DS</button>
+      </div>
       <div class="menu-identity-wrap">
         <span class="menu-identity" data-i18n="identityTag">JON HERNÁNDEZ BUENO - FÍSICO</span>
         <div class="menu-social">

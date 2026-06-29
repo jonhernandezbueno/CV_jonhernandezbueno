@@ -126,6 +126,43 @@ a:hover { text-decoration: underline; }
 
 .menu-lang { position: static; }
 
+.theme-switch {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.theme-btn {
+  background: rgba(3, 31, 100, 0.6);
+  border: 2px solid var(--fg);
+  color: var(--fg);
+  font-family: var(--font-menu);
+  font-size: 0.72rem;
+  padding: 0.22rem 0.5rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-under);
+  transition: background 0.15s, color 0.15s;
+  letter-spacing: 0.06em;
+}
+
+.theme-btn.active {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+[data-theme="ds"] .theme-btn {
+  font-family: var(--ds-font-title, "Cinzel", serif);
+  border-color: var(--ds-gold-dim, #7a6340);
+  background: rgba(10, 8, 6, 0.85);
+  color: var(--ds-text-dim, #9a8b72);
+  box-shadow: none;
+}
+
+[data-theme="ds"] .theme-btn.active {
+  background: var(--ds-gold-dim, #7a6340);
+  color: var(--ds-gold-bright, #e8d4a8);
+}
+
 .lang-btn {
   background: rgba(3, 31, 100, 0.6);
   border: 2px solid var(--fg);
