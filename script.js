@@ -33,9 +33,31 @@
 
   function syncDSMobileDetailUI(open) {
     if (!usesDSMobileDetail()) return;
+    setDSDetailOpen(false);
     menuStage.classList.toggle('detail-open', open);
     mainMenu.classList.toggle('detail-open', open);
     detailPanel.setAttribute('aria-hidden', open ? 'false' : 'true');
+    mountDSMobileDetailPanel(open);
+  }
+
+  const detailPanelAnchor = { parent: null, next: null };
+
+  function mountDSMobileDetailPanel(mount) {
+    if (!usesDSMobileDetail()) return;
+    if (mount) {
+      if (detailPanel.parentElement === document.body) return;
+      detailPanelAnchor.parent = detailPanel.parentElement;
+      detailPanelAnchor.next = detailPanel.nextSibling;
+      document.body.appendChild(detailPanel);
+      detailPanel.classList.add('is-ds-mobile-detail');
+      document.body.classList.add('ds-mobile-detail-open');
+    } else {
+      detailPanel.classList.remove('is-ds-mobile-detail');
+      document.body.classList.remove('ds-mobile-detail-open');
+      if (detailPanelAnchor.parent && detailPanel.parentElement === document.body) {
+        detailPanelAnchor.parent.insertBefore(detailPanel, detailPanelAnchor.next);
+      }
+    }
   }
 
   function resolveMenuLayout(index) {

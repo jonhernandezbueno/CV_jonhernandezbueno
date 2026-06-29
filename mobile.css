@@ -343,26 +343,39 @@
     white-space: nowrap;
   }
 
-  /* DS menú 2 móvil: panel lateral compartido (#detailPanel), igual que P3 */
+  /* DS menú 2 móvil: panel en body (evita recorte por overflow de menu-stage) */
   [data-theme="ds"] .menu-stage.detail-open .menu-side {
     display: none !important;
   }
 
-  [data-theme="ds"] .menu-stage.detail-open .detail-panel {
+  [data-theme="ds"] .ds-screen.detail-open .ds-col-detail {
+    display: none !important;
+  }
+
+  body.ds-mobile-detail-open {
+    overflow: hidden !important;
+  }
+
+  [data-theme="ds"] .detail-panel.is-ds-mobile-detail {
     display: flex !important;
     flex-direction: column;
     position: fixed !important;
-    inset: 0 !important;
+    top: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    width: 100% !important;
+    bottom: 0 !important;
+    width: 100vw !important;
     height: 100dvh !important;
+    min-height: 100dvh !important;
+    max-height: 100dvh !important;
+    margin: 0 !important;
     padding: calc(3.75rem + env(safe-area-inset-top)) 0.85rem calc(0.85rem + env(safe-area-inset-bottom)) 0.85rem !important;
-    z-index: 55 !important;
+    z-index: 200 !important;
     transform: none !important;
     opacity: 1 !important;
     pointer-events: auto !important;
-    overflow: hidden;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
     background:
       url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
       linear-gradient(180deg, rgba(14, 10, 8, 0.98) 0%, rgba(6, 4, 3, 0.99) 100%) !important;
@@ -370,24 +383,24 @@
     font-family: var(--ds-font);
   }
 
-  [data-theme="ds"] .menu-stage.detail-open .detail-index,
-  [data-theme="ds"] .menu-stage.detail-open .detail-codename,
-  [data-theme="ds"] .menu-stage.detail-open .detail-slash,
-  [data-theme="ds"] .menu-stage.detail-open .detail-pointer,
-  [data-theme="ds"] .menu-stage.detail-open .detail-title-red {
+  [data-theme="ds"] .detail-panel.is-ds-mobile-detail .detail-index,
+  [data-theme="ds"] .detail-panel.is-ds-mobile-detail .detail-codename,
+  [data-theme="ds"] .detail-panel.is-ds-mobile-detail .detail-slash,
+  [data-theme="ds"] .detail-panel.is-ds-mobile-detail .detail-pointer,
+  [data-theme="ds"] .detail-panel.is-ds-mobile-detail .detail-title-red {
     display: none !important;
   }
 
-  [data-theme="ds"] .menu-stage.detail-open .detail-header {
+  [data-theme="ds"] .detail-panel.is-ds-mobile-detail .detail-header {
     flex-shrink: 0;
   }
 
-  [data-theme="ds"] .menu-stage.detail-open .detail-title-wrap {
+  [data-theme="ds"] .detail-panel.is-ds-mobile-detail .detail-title-wrap {
     transform: none;
     margin-left: 0;
   }
 
-  [data-theme="ds"] .menu-stage.detail-open .detail-title {
+  [data-theme="ds"] .detail-panel.is-ds-mobile-detail .detail-title {
     font-family: var(--ds-font-display);
     color: var(--ds-gold-bright);
     font-size: clamp(1.05rem, 4.8vw, 1.45rem);
@@ -396,7 +409,7 @@
     transform: none;
   }
 
-  [data-theme="ds"] .menu-stage.detail-open .detail-back-mobile {
+  [data-theme="ds"] .detail-panel.is-ds-mobile-detail .detail-back-mobile {
     display: flex !important;
     align-items: center;
     justify-content: center;
@@ -416,13 +429,13 @@
     touch-action: manipulation;
   }
 
-  [data-theme="ds"] .menu-stage.detail-open .detail-back-mobile::before {
+  [data-theme="ds"] .detail-panel.is-ds-mobile-detail .detail-back-mobile::before {
     content: "◀";
     font-size: 0.62rem;
     color: var(--ds-gold);
   }
 
-  [data-theme="ds"] .menu-stage.detail-open .detail-body {
+  [data-theme="ds"] .detail-panel.is-ds-mobile-detail .detail-body {
     flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
@@ -434,15 +447,15 @@
     padding: 0 0.15rem 0.5rem;
   }
 
-  [data-theme="ds"] .menu-stage.detail-open .detail-body a {
+  [data-theme="ds"] .detail-panel.is-ds-mobile-detail .detail-body a {
     color: var(--ds-gold-bright);
   }
 
-  [data-theme="ds"] .menu-stage.detail-open .detail-body .entry-year {
+  [data-theme="ds"] .detail-panel.is-ds-mobile-detail .detail-body .entry-year {
     color: var(--ds-gold-dim);
   }
 
-  [data-theme="ds"] .menu-stage.detail-open .detail-body .entry h3 {
+  [data-theme="ds"] .detail-panel.is-ds-mobile-detail .detail-body .entry h3 {
     color: var(--ds-gold-bright);
   }
 
