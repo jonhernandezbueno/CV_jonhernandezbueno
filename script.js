@@ -31,10 +31,10 @@
     const base = MENU_LAYOUT[index];
     if (!isNarrowP3Layout()) return base;
     return {
-      rotation: Math.round(base.rotation * 0.55),
+      rotation: Math.round(base.rotation * 0.42),
       zIndex: base.zIndex,
-      offsetX: Math.round(base.offsetX * 0.35) + 32,
-      offsetY: Math.round(base.offsetY * 0.4)
+      offsetX: Math.round(base.offsetX * 0.15) + 72,
+      offsetY: Math.round(base.offsetY * 0.32)
     };
   }
 
@@ -506,6 +506,7 @@
               <ul class="ds-stat-list" id="dsStatRight"></ul>
             </div>
             <div class="ds-col ds-col-detail" id="dsDetailCol" aria-hidden="true">
+              <button type="button" class="ds-detail-back-mobile" id="dsDetailBackMobile" data-i18n="hintBackMenu">MENÚ PRINCIPAL</button>
               <div class="ds-detail-columns">
                 <div class="ds-detail-side">
                   <ul class="ds-stat-list" id="dsDetailStats"></ul>
@@ -574,6 +575,11 @@
     const backBtn = menuColumn.querySelector('.ds-accept-back');
     if (backBtn) {
       backBtn.addEventListener('click', () => backToMain());
+    }
+
+    const dsDetailBackMobile = document.getElementById('dsDetailBackMobile');
+    if (dsDetailBackMobile) {
+      dsDetailBackMobile.addEventListener('click', () => backToMain());
     }
 
     if (detailOpen && currentSection) {
