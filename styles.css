@@ -42,28 +42,6 @@ html, body {
   user-select: none;
 }
 
-@media (max-width: 768px) {
-  html, body {
-    overflow-x: hidden;
-    overflow-y: auto;
-    height: auto;
-    min-height: 100dvh;
-  }
-
-  .main-menu {
-    position: relative;
-    min-height: 100dvh;
-    overflow-x: hidden;
-    overflow-y: auto;
-  }
-
-  .menu-stage {
-    position: relative;
-    min-height: calc(100dvh - 5rem);
-    overflow: visible;
-  }
-}
-
 a { color: var(--button-1); text-decoration: none; }
 a:hover { text-decoration: underline; }
 

@@ -346,9 +346,7 @@
   }
 
   function buildMenu() {
-    syncMobileClass();
     if (currentTheme === 'ds') buildMenuDS();
-    else if (mobileLayoutActive) buildMenuP3Mobile();
     else buildMenuP3();
     setFocus(focusIndex, false);
     if (currentSection) loadSectionContent(currentSection, false);
@@ -369,66 +367,6 @@
         openSection(key);
       }
     });
-  }
-
-  let dsEmberFrame = null;
-
-  function isMobileLayout() {
-    return window.matchMedia('(max-width: 768px), (hover: none) and (pointer: coarse)').matches;
-  }
-
-  let mobileLayoutActive = false;
-
-  function syncMobileClass() {
-    mobileLayoutActive = isMobileLayout();
-    document.body.classList.toggle('is-mobile', mobileLayoutActive);
-  }
-
-  function bindP3MobileItem(li, key, i) {
-    const activate = () => {
-      setFocus(i, false);
-      if (detailOpen) switchSection(key);
-      else openSection(key);
-    };
-    li.addEventListener('click', activate);
-  }
-
-  function buildMenuP3Mobile() {
-    menuColumn.innerHTML = '';
-    optionWraps = [];
-
-    const nav = document.createElement('nav');
-    nav.className = 'p3-mobile-nav';
-    nav.setAttribute('aria-label', 'Main menu');
-
-    const ul = document.createElement('ul');
-    ul.className = 'p3-mobile-list';
-    ul.setAttribute('role', 'menubar');
-
-    SECTIONS.forEach((key, i) => {
-      const li = document.createElement('li');
-      li.className = 'p3-mobile-item';
-      li.setAttribute('role', 'menuitem');
-      li.dataset.idx = String(i);
-      li.dataset.section = key;
-      li.innerHTML = `
-        <span class="p3-mobile-num">${String(i + 1).padStart(2, '0')}</span>
-        <span class="p3-mobile-label">${t(`menu.${key}`)}</span>
-        <span class="p3-mobile-arrow" aria-hidden="true">▶</span>
-      `;
-      bindP3MobileItem(li, key, i);
-      ul.appendChild(li);
-      optionWraps.push(li);
-    });
-
-    nav.appendChild(ul);
-    menuColumn.appendChild(nav);
-
-    const preview = document.createElement('p');
-    preview.className = 'p3-mobile-preview';
-    preview.id = 'p3MobilePreview';
-    preview.textContent = getSection(SECTIONS[focusIndex]).preview;
-    menuColumn.appendChild(preview);
   }
 
   function buildMenuP3() {
@@ -494,6 +432,8 @@
       optionWraps.push(wrap);
     });
   }
+
+  let dsEmberFrame = null;
 
   function buildMenuDS() {
     menuColumn.innerHTML = `
@@ -625,8 +565,6 @@
     }
 
     updateDSStats();
-    const dsScreen = menuColumn.querySelector('.ds-screen');
-    if (dsScreen) dsScreen.classList.toggle('ds-screen--mobile', mobileLayoutActive);
   }
 
   function updateDSDetailStats(key) {
@@ -658,12 +596,15 @@
     const dsCol = document.getElementById('dsDetailCol');
     if (dsScreen) dsScreen.classList.toggle('detail-open', open);
     if (dsCol) dsCol.setAttribute('aria-hidden', open ? 'false' : 'true');
-    if (dsScreen) dsScreen.classList.toggle('ds-screen--mobile', mobileLayoutActive);
   }
 
   function updateDSMobileStats(sectionKey) {
     const el = document.getElementById('dsMobileStats');
-    if (!el || !mobileLayoutActive) return;
+    if (!el) return;
+    if (!window.matchMedia('(max-width: 768px)').matches) {
+      el.innerHTML = '';
+      return;
+    }
     const cur = computeDerived(DS_BASE_ATTR);
     const nxt = computeDerived(getAttrsWithBoost(sectionKey));
     const rows = [
@@ -683,8 +624,6 @@
     optionWraps.forEach((wrap, i) => {
       const selected = i === focusIndex;
       wrap.classList.toggle('is-selected', selected);
-      if (mobileLayoutActive) return;
-
       wrap.style.zIndex = selected ? '5' : String(MENU_LAYOUT[i].zIndex);
 
       const text = wrap.querySelector('.menu-text:not(.fill-red)');
@@ -704,9 +643,6 @@
         redGroup.style.display = 'none';
       }
     });
-
-    const mobilePreview = document.getElementById('p3MobilePreview');
-    if (mobilePreview) mobilePreview.textContent = getSection(SECTIONS[focusIndex]).preview;
   }
 
   function setFocusDS() {
@@ -952,8 +888,6 @@
     switchSection(SECTIONS[next]);
   }
 
-  let dsEmberFrame = null;
-
   function startDSEmbers() {
     if (!dsEmberCanvas || dsEmberFrame) return;
     const ctx = dsEmberCanvas.getContext('2d');
@@ -1135,15 +1069,8 @@
   document.documentElement.dataset.theme = 'p3';
   themeButtons.forEach((b) => b.classList.toggle('active', b.dataset.theme === 'p3'));
 
-  syncMobileClass();
-  window.addEventListener('resize', () => {
-    const wasMobile = mobileLayoutActive;
-    syncMobileClass();
-    if (wasMobile !== mobileLayoutActive) buildMenu();
-  });
-
   applyLanguage(currentLang);
   setCommandMode('main');
   initOcean();
-  if (currentTheme === 'p3' && !mobileLayoutActive) setTimeout(pulseSelectors, 500);
+  if (currentTheme === 'p3') setTimeout(pulseSelectors, 500);
 })();
