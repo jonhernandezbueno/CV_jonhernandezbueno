@@ -27,6 +27,17 @@
     return window.matchMedia('(max-width: 768px)').matches;
   }
 
+  function usesDSMobileDetail() {
+    return currentTheme === 'ds' && isNarrowP3Layout();
+  }
+
+  function syncDSMobileDetailUI(open) {
+    if (!usesDSMobileDetail()) return;
+    menuStage.classList.toggle('detail-open', open);
+    mainMenu.classList.toggle('detail-open', open);
+    detailPanel.setAttribute('aria-hidden', open ? 'false' : 'true');
+  }
+
   function resolveMenuLayout(index) {
     const base = MENU_LAYOUT[index];
     if (!isNarrowP3Layout()) return base;
@@ -583,9 +594,14 @@
     }
 
     if (detailOpen && currentSection) {
-      const dsScreen = menuColumn.querySelector('.ds-screen');
-      if (dsScreen) dsScreen.classList.add('detail-open');
-      loadSectionContent(currentSection, false);
+      if (usesDSMobileDetail()) {
+        syncDSMobileDetailUI(true);
+        loadSectionContent(currentSection, false);
+      } else {
+        const dsScreen = menuColumn.querySelector('.ds-screen');
+        if (dsScreen) dsScreen.classList.add('detail-open');
+        loadSectionContent(currentSection, false);
+      }
     }
 
     updateDSStats();
@@ -844,6 +860,11 @@
     detailOpen = true;
 
     if (currentTheme === 'ds') {
+      if (usesDSMobileDetail()) {
+        syncDSMobileDetailUI(true);
+        setCommandMode('detail');
+        return;
+      }
       setDSDetailOpen(true);
       setCommandMode('detail');
       return;
@@ -869,6 +890,13 @@
     currentSection = null;
 
     if (currentTheme === 'ds') {
+      if (usesDSMobileDetail()) {
+        syncDSMobileDetailUI(false);
+        updateDSSelectionUI(SECTIONS[focusIndex]);
+        setCommandMode('main');
+        updateDSStats();
+        return;
+      }
       setDSDetailOpen(false);
       updateDSSelectionUI(SECTIONS[focusIndex]);
       setCommandMode('main');
@@ -1095,11 +1123,24 @@
   let narrowP3Cached = isNarrowP3Layout();
   window.addEventListener('resize', () => {
     const narrow = isNarrowP3Layout();
-    if (narrow === narrowP3Cached || currentTheme !== 'p3') return;
-    narrowP3Cached = narrow;
-    buildMenuP3();
-    setFocus(focusIndex, false);
-    if (detailOpen && currentSection) loadSectionContent(currentSection, false);
+    if (narrow !== narrowP3Cached) {
+      narrowP3Cached = narrow;
+      if (currentTheme === 'p3') {
+        buildMenuP3();
+        setFocus(focusIndex, false);
+        if (detailOpen && currentSection) loadSectionContent(currentSection, false);
+      }
+      if (currentTheme === 'ds' && detailOpen) {
+        if (narrow) {
+          setDSDetailOpen(false);
+          syncDSMobileDetailUI(true);
+        } else {
+          syncDSMobileDetailUI(false);
+          setDSDetailOpen(true);
+        }
+        if (currentSection) loadSectionContent(currentSection, false);
+      }
+    }
   });
 
   document.addEventListener('click', () => ensureAudio(), { once: true });
