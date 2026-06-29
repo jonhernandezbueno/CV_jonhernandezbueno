@@ -64,10 +64,10 @@
     const base = MENU_LAYOUT[index];
     if (!isNarrowP3Layout()) return base;
     return {
-      rotation: Math.round(base.rotation * 0.42),
+      rotation: Math.round(base.rotation * 0.44),
       zIndex: base.zIndex,
-      offsetX: Math.round(base.offsetX * 0.15) + 72,
-      offsetY: Math.round(base.offsetY * 0.32)
+      offsetX: Math.round(base.offsetX * 0.15) + 68,
+      offsetY: Math.round(base.offsetY * 0.34)
     };
   }
 

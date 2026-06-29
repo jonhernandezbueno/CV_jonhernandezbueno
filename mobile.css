@@ -101,9 +101,40 @@
     z-index: 12;
   }
 
-  [data-theme="p3"] .char-portrait,
+  [data-theme="p3"] .char-portrait {
+    display: block !important;
+    position: fixed;
+    top: max(0.42rem, env(safe-area-inset-top));
+    left: 0.5rem;
+    z-index: 62;
+    max-height: none;
+    padding: 0;
+    opacity: 0.92;
+    pointer-events: none;
+  }
+
+  [data-theme="p3"] .char-portrait img {
+    display: block;
+    max-height: 3.4rem;
+    max-width: 3.4rem;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    object-position: left top;
+    animation: none;
+    filter: drop-shadow(0 3px 10px rgba(3, 31, 100, 0.55));
+  }
+
+  [data-theme="p3"] .main-menu.detail-open .char-portrait {
+    display: none !important;
+  }
+
   [data-theme="p3"] .index-display {
     display: none !important;
+  }
+
+  [data-theme="p3"] .menu-header-bar {
+    padding-left: 4.1rem;
   }
 
   [data-theme="p3"] .menu-side {
@@ -125,11 +156,11 @@
     position: relative !important;
     left: auto !important;
     top: auto !important;
-    width: min(900px, 94vw) !important;
+    width: min(940px, 98vw) !important;
     height: auto !important;
     min-height: 0;
     flex-shrink: 0;
-    transform: none !important;
+    transform: scale(1.06) !important;
     transform-origin: center center;
     justify-content: center !important;
     align-items: stretch;
@@ -149,11 +180,11 @@
   }
 
   [data-theme="p3"] .menu-text {
-    font-size: clamp(30px, 9.5vw, 52px) !important;
+    font-size: clamp(34px, 10.8vw, 58px) !important;
   }
 
   [data-theme="p3"] .menu-option-wrap {
-    margin-top: -3.35rem;
+    margin-top: -3.55rem;
     overflow: visible;
   }
 
@@ -162,14 +193,14 @@
   }
 
   [data-theme="p3"] .menu-hit {
-    height: 3.25rem;
+    height: 3.55rem;
     width: 100%;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
 
   [data-theme="p3"] .menu-option-wrap.is-selected .menu-text {
-    transform: scale(1.28);
+    transform: scale(1.32);
   }
 
   [data-theme="p3"] .menu-prompt {
@@ -465,12 +496,25 @@
 }
 
 @media (max-width: 480px) {
+  [data-theme="p3"] .char-portrait img {
+    max-height: 3rem;
+    max-width: 3rem;
+  }
+
+  [data-theme="p3"] .menu-header-bar {
+    padding-left: 3.65rem;
+  }
+
+  [data-theme="p3"] .menu-column {
+    transform: scale(1.04) !important;
+  }
+
   [data-theme="p3"] .menu-text {
-    font-size: clamp(24px, 8.2vw, 40px) !important;
+    font-size: clamp(30px, 10.2vw, 52px) !important;
   }
 
   [data-theme="p3"] .menu-option-wrap {
-    margin-top: -2.75rem;
+    margin-top: -3.2rem;
   }
 
   [data-theme="ds"] .menu-identity {
