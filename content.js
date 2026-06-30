@@ -64,6 +64,10 @@ const I18N = {
     dsFooterSelect: "Seleccionar",
     dsFooterConfirm: "Abrir",
     dsFooterExit: "Salir",
+    dg3MenuTitle: "Menú principal",
+    dg3FooterConfirm: "Confirmar",
+    dg3FooterNav: "Navegar",
+    dg3FooterBack: "Menú principal",
     dsFlavors: {
       educacion: "Defensa física forjada en laboratorios, aulas y tesis.",
       publicaciones: "Ataque mágico y rayo que alcanzan revistas lejanas.",
@@ -922,6 +926,10 @@ const I18N = {
     dsFooterSelect: "Select",
     dsFooterConfirm: "Open",
     dsFooterExit: "Exit",
+    dg3MenuTitle: "Main Menu",
+    dg3FooterConfirm: "Confirm",
+    dg3FooterNav: "Navigate",
+    dg3FooterBack: "Main Menu",
     dsFlavors: {
       educacion: "Physical defense forged in labs, lectures and theses.",
       publicaciones: "Magic attack and lightning reaching distant journals.",

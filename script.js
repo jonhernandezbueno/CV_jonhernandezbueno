@@ -23,6 +23,20 @@
     { rotation: -8, zIndex: 2, offsetX: -20, offsetY: 20 }
   ];
 
+  const DG3_ITEM_H = 64;
+  const DG3_VIEWPORT_ITEMS = 7;
+  const DG3_VIEWPORT_CENTER = DG3_ITEM_H * (DG3_VIEWPORT_ITEMS / 2);
+
+  const DG3_ICONS = {
+    educacion: '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#ffd84a" stroke="#8a5800" stroke-width="1.2" d="M6 10h20v14H6z"/><path fill="#c87800" d="M8 8h16l-8-4z"/><path stroke="#5a3800" stroke-width="1.2" d="M10 14h12M10 18h8"/></svg>',
+    publicaciones: '<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="7" y="5" width="18" height="22" rx="2" fill="#e8f4ff" stroke="#2a5a9a" stroke-width="1.5"/><path fill="#4ad4ff" d="M11 10h10v2H11zm0 5h10v2H11zm0 5h7v2h-7z"/></svg>',
+    logros: '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#ffd84a" stroke="#c87800" stroke-width="1.2" d="M16 4l3 7h7l-5.5 4.5 2 7L16 19l-6.5 3.5 2-7L6 11h7z"/><circle cx="16" cy="24" r="4" fill="#ffb800" stroke="#8a5800" stroke-width="1.2"/></svg>',
+    bibliografia: '<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="6" y="8" width="8" height="18" rx="1" fill="#c44" stroke="#6a1818" stroke-width="1"/><rect x="12" y="6" width="8" height="20" rx="1" fill="#4a8" stroke="#184818" stroke-width="1"/><rect x="18" y="9" width="8" height="17" rx="1" fill="#48c" stroke="#184868" stroke-width="1"/></svg>',
+    curiosidades: '<svg viewBox="0 0 32 32" aria-hidden="true"><polygon fill="#ffe44a" stroke="#c87800" stroke-width="1.2" points="16,4 19,13 28,13 21,19 24,28 16,23 8,28 11,19 4,13 13,13"/></svg>',
+    certificaciones: '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#4ad4ff" stroke="#1a5fa8" stroke-width="1.5" d="M16 4l12 5v9c0 7-5.5 12-12 14C9.5 30 4 25 4 18V9z"/><path fill="#ffd84a" d="M14 17l3 3 6-7" stroke="#8a5800" stroke-width="1.5" fill="none"/></svg>',
+    patentes: '<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="#ffe44a" stroke="#c87800" stroke-width="1.2" d="M18 3L8 18h7l-3 11 12-16h-7z"/></svg>'
+  };
+
   function isNarrowP3Layout() {
     return window.matchMedia('(max-width: 768px)').matches;
   }
@@ -395,6 +409,7 @@
 
   function buildMenu() {
     if (currentTheme === 'ds') buildMenuDS();
+    else if (currentTheme === 'dg3') buildMenuDG3();
     else buildMenuP3();
     setFocus(focusIndex, false);
     if (currentSection) loadSectionContent(currentSection, false);
@@ -629,6 +644,85 @@
     updateDSStats();
   }
 
+  function buildMenuDG3() {
+    menuColumn.innerHTML = `
+      <div class="dg3-screen">
+        <div class="dg3-cloud-deco dg3-cloud-deco--tl" aria-hidden="true"></div>
+        <div class="dg3-cloud-deco dg3-cloud-deco--tr" aria-hidden="true"></div>
+        <header class="dg3-header">
+          <div class="dg3-emblem" aria-hidden="true"></div>
+          <h1 class="dg3-title" data-i18n="dg3MenuTitle">Menú principal</h1>
+        </header>
+        <div class="dg3-body">
+          <div class="dg3-left">
+            <div class="dg3-arrow dg3-arrow-up" aria-hidden="true">▲</div>
+            <div class="dg3-roulette-viewport">
+              <div class="dg3-highlight-bar" aria-hidden="true"></div>
+              <ul class="dg3-roulette-list" id="dg3List" role="menubar" aria-label="Menú principal"></ul>
+            </div>
+            <div class="dg3-arrow dg3-arrow-down" aria-hidden="true">▼</div>
+          </div>
+        </div>
+        <footer class="dg3-footer">
+          <div class="dg3-footer-cloud" aria-hidden="true"></div>
+          <div class="dg3-footer-accent" aria-hidden="true"></div>
+          <div class="dg3-footer-box">
+            <p class="dg3-footer-text" id="dg3FooterDesc"></p>
+          </div>
+        </footer>
+      </div>
+    `;
+
+    const list = document.getElementById('dg3List');
+    optionWraps = [];
+
+    SECTIONS.forEach((key, i) => {
+      const li = document.createElement('li');
+      li.className = 'dg3-item';
+      li.setAttribute('role', 'menuitem');
+      li.dataset.section = key;
+      li.dataset.idx = String(i);
+      const label = t(`menu.${key}`);
+      li.innerHTML = `
+        <button type="button" class="dg3-item-btn" aria-label="${label}">
+          <span class="dg3-icon">${DG3_ICONS[key] || ''}</span>
+          <span class="dg3-label">${label}</span>
+        </button>
+      `;
+      const btn = li.querySelector('.dg3-item-btn');
+      btn.addEventListener('mouseenter', () => {
+        setFocus(i, false);
+        if (detailOpen && SECTIONS[i] !== currentSection) {
+          switchSection(SECTIONS[i]);
+        }
+      });
+      btn.addEventListener('click', () => {
+        setFocus(i, false);
+        if (detailOpen) {
+          switchSection(key);
+        } else {
+          openSection(key);
+        }
+      });
+      list.appendChild(li);
+      optionWraps.push(li);
+    });
+
+    document.querySelectorAll('#menuColumn [data-i18n]').forEach((el) => {
+      const val = t(el.dataset.i18n);
+      if (val) el.textContent = val;
+    });
+
+    setFocusDG3();
+
+    if (detailOpen && currentSection) {
+      menuStage.classList.add('detail-open');
+      mainMenu.classList.add('detail-open');
+      detailPanel.setAttribute('aria-hidden', 'false');
+      loadSectionContent(currentSection, false);
+    }
+  }
+
   function updateDSDetailStats(key) {
     const list = document.getElementById('dsDetailStats');
     if (!list) return;
@@ -707,6 +801,28 @@
     });
   }
 
+  function setFocusDG3() {
+    const list = document.getElementById('dg3List');
+    if (!list) return;
+
+    const offsetY = DG3_VIEWPORT_CENTER - focusIndex * DG3_ITEM_H - DG3_ITEM_H / 2;
+    list.style.transform = `translateY(${offsetY}px)`;
+
+    optionWraps.forEach((wrap, i) => {
+      const dist = Math.abs(i - focusIndex);
+      const selected = i === focusIndex;
+      wrap.classList.toggle('is-selected', selected);
+      wrap.classList.toggle('is-above', i < focusIndex);
+      wrap.classList.toggle('is-below', i > focusIndex);
+      wrap.classList.toggle('is-near', dist === 1);
+      wrap.classList.toggle('is-far', dist >= 2);
+    });
+
+    const data = getSection(SECTIONS[focusIndex]);
+    const footer = document.getElementById('dg3FooterDesc');
+    if (footer) footer.textContent = data.preview;
+  }
+
   function setFocusDS() {
     updateDSAttributeList(SECTIONS[focusIndex]);
     updateDSSelectionUI(SECTIONS[focusIndex]);
@@ -719,6 +835,7 @@
     focusIndex = index;
 
     if (currentTheme === 'ds') setFocusDS();
+    else if (currentTheme === 'dg3') setFocusDG3();
     else setFocusP3();
 
     const data = getSection(SECTIONS[focusIndex]);
@@ -760,6 +877,15 @@
       }
       if (detailLabels[0]) detailLabels[0].textContent = t('dsFooterSelect');
       if (detailLabels[1]) detailLabels[1].textContent = t('dsFooterExit');
+    } else if (currentTheme === 'dg3') {
+      const sectionLabel = t(`menu.${SECTIONS[focusIndex]}`);
+      if (confirmLbl) {
+        confirmLbl.textContent = detailOpen
+          ? t('dg3FooterNav')
+          : `${t('dg3FooterConfirm')} · ${sectionLabel}`;
+      }
+      if (detailLabels[0]) detailLabels[0].textContent = t('dg3FooterNav');
+      if (detailLabels[1]) detailLabels[1].textContent = t('dg3FooterBack');
     } else {
       if (confirmLbl) confirmLbl.textContent = t('hintConfirm');
       if (detailLabels[0]) detailLabels[0].textContent = t('hintNav');
@@ -794,16 +920,17 @@
       osc.connect(gain);
       gain.connect(ctx.destination);
       const isDs = currentTheme === 'ds';
+      const isDg3 = currentTheme === 'dg3';
       if (type === 'tick') {
-        osc.frequency.value = isDs ? 220 : 440;
+        osc.frequency.value = isDs ? 220 : isDg3 ? 520 : 440;
         osc.type = isDs ? 'triangle' : 'sine';
-        gain.gain.setValueAtTime(isDs ? 0.05 : 0.04, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+        gain.gain.setValueAtTime(isDs ? 0.05 : isDg3 ? 0.045 : 0.04, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (isDg3 ? 0.05 : 0.06));
         osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.06);
+        osc.stop(ctx.currentTime + (isDg3 ? 0.05 : 0.06));
       } else if (type === 'confirm') {
-        osc.frequency.setValueAtTime(isDs ? 180 : 320, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(isDs ? 360 : 640, ctx.currentTime + 0.12);
+        osc.frequency.setValueAtTime(isDs ? 180 : isDg3 ? 400 : 320, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(isDs ? 360 : isDg3 ? 720 : 640, ctx.currentTime + 0.12);
         osc.type = isDs ? 'triangle' : 'sine';
         gain.gain.setValueAtTime(0.05, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.14);
@@ -942,14 +1069,18 @@
     themeButtons.forEach((b) => b.classList.toggle('active', b.dataset.theme === theme));
     document.title = theme === 'ds'
       ? 'Jon Hernández-Bueno — CV · Dark Souls'
-      : 'Jon Hernández-Bueno — CV · Persona 3 Reload';
+      : theme === 'dg3'
+        ? 'Jon Hernández-Bueno — CV · Budokai Tenkaichi 3'
+        : 'Jon Hernández-Bueno — CV · Persona 3 Reload';
     buildMenu();
     updateCommandLabels();
     if (theme === 'p3') {
       setTimeout(pulseSelectors, 300);
       stopDSEmbers();
-    } else {
+    } else if (theme === 'ds') {
       startDSEmbers();
+    } else {
+      stopDSEmbers();
     }
     playSound('tick');
   }
@@ -1149,6 +1280,11 @@
       narrowP3Cached = narrow;
       if (currentTheme === 'p3') {
         buildMenuP3();
+        setFocus(focusIndex, false);
+        if (detailOpen && currentSection) loadSectionContent(currentSection, false);
+      }
+      if (currentTheme === 'dg3') {
+        buildMenuDG3();
         setFocus(focusIndex, false);
         if (detailOpen && currentSection) loadSectionContent(currentSection, false);
       }
