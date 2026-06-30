@@ -66,8 +66,8 @@
     return {
       rotation: Math.round(base.rotation * 0.44),
       zIndex: base.zIndex,
-      offsetX: Math.round(base.offsetX * 0.15) + 68,
-      offsetY: Math.round(base.offsetY * 0.34)
+      offsetX: Math.round(base.offsetX * 0.15) + 64,
+      offsetY: Math.round(base.offsetY * 0.36)
     };
   }
 
@@ -492,7 +492,7 @@
         <div class="ds-screen-edge">
           <header class="ds-topbar">
             <div class="ds-topbar-portrait">
-              <img src="character.png" alt="">
+              <img src="DSimag.png" alt="">
             </div>
             <div class="ds-topbar-text">
               <p class="ds-panel-eyebrow" data-i18n="dsPanelEyebrow">Level Up</p>
